@@ -9,7 +9,8 @@ class QuoteBox extends Component{
         this.state = {
         
             quoteNow:"Loading ...",
-            quoteSize:0
+            quoteSize:0,
+            quoteAuthor:""
         };
         
     }
@@ -21,7 +22,8 @@ class QuoteBox extends Component{
         var username  = snap.val();
         console.log(username);
         this.setState ({
-        quoteNow:snap.val()
+        quoteNow:snap.child('quote').val(),
+        quoteAuthor:snap.child('author').val()
         });
     })
 }  
@@ -48,7 +50,7 @@ getRandom(number){
 //you should bind that method.
 //Arrow function binds 
 quoteBtnClicked () {
-    console.log('this is:', this);
+   // console.log('this is:', this);//this here will be the quoteBox class
     //get random id value b/w 1 to 10
     
     let newId = this.getRandom(10);
@@ -56,20 +58,30 @@ quoteBtnClicked () {
     this.changeQuote(newId);
   }
 
+tweetBtnClicked(){
+window.open(`https://twitter.com/intent/tweet?text=${this.state.quoteNow}`,'popUpWindow','height=400,width=600,left=10,top=10,,scrollbars=yes,menubar=no')
+}
+
 
 
     render(){
         return(
         <div>
-        <div className="boxed">
-        <h2 className="quotes">{this.state.quoteNow}</h2>
-        </div>
-        {/*this refers to the class in the context. this.quoteBtnClicked refers to the
-        function in class*/}
         <div className="btnBox">
         <button className="appButton" onClick={(e) =>this.quoteBtnClicked(e)}>Show me a random quote</button>
-        <button className="appButton">Tweet this!</button>
+        <button className="appButton" onClick={(e)=>this.tweetBtnClicked(e)} >Tweet this!</button>
         </div>
+        
+        <p className="boxed bubble" >
+        
+        <h2 className="quotes">{this.state.quoteNow}</h2>
+        </p>
+        <p className="quote-subtext">
+            {this.state.quoteAuthor}
+        </p>
+        {/*this refers to the class in the context. this.quoteBtnClicked refers to the
+        function in class*/}
+        
         </div>
         );
     }
